@@ -10,6 +10,7 @@ import {
   briefDecriptionBosses,
   skillsBriefDescription,
   weaponsList,
+  recipesList,
 } from "./data";
 import type {
   ResourceIds,
@@ -31,9 +32,9 @@ type ResponseError = {
 
 app.use(express.static("public"));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Specify allowed origin
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Specify allowed methods
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Specify allowed headers
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 
@@ -55,11 +56,11 @@ app.get("/news/:page", async (req: Request, res: Response) => {
     })
   );
 });
-// ?new_id=1&page=2
+
 app.get("/specificNews/:newsId", async (req: Request, res: Response, next) => {
   const { newsId } = req.params;
   const searchNews = newsList.find((data) => data.id === newsId);
-  console.log(searchNews);
+
   if (searchNews === undefined) {
     const error: ResponseError = {
       message: "News not found",
@@ -82,14 +83,15 @@ app.get("/resource/:itemId", async (req: Request, res: Response) => {
   const { itemId } = req.params;
   const searchResource = resourcesList[itemId as ResourceIds];
   const enemiesListFiltered: Partial<EnemiesList> = {};
-
-  searchResource.groups.enemiesList.forEach((id: EnemiesIds) => {
+  searchResource?.groups?.enemiesList.forEach((id: EnemiesIds) => {
     enemiesListFiltered[id] = enemiesList[id];
   });
 
   const resourcesListFiltered: Partial<ResourcesList> = {};
 
-  searchResource.groups.resoursesList.forEach((group) => {
+  const resourceRecipeId = searchResource?.groups?.resoursesList;
+
+  recipesList[resourceRecipeId]?.forEach((group) => {
     group.recipe.forEach((recipe) => {
       resourcesListFiltered[recipe] = resourcesList[recipe];
     });
@@ -103,6 +105,7 @@ app.get("/resource/:itemId", async (req: Request, res: Response) => {
       id: itemId as ResourceIds,
       enemiesList: enemiesListFiltered,
       resourcesList: resourcesListFiltered,
+      recipesList: recipesList[resourceRecipeId],
     })
   );
 });
@@ -115,7 +118,6 @@ app.get(
   "/skills-list/:specificSkillId",
   async (req: Request, res: Response) => {
     const { specificSkillId } = req.params;
-    console.log(specificSkillId);
 
     res.send(
       JSON.stringify({
@@ -133,7 +135,7 @@ app.get("/weapons", async (req: Request, res: Response) => {
 
 app.get("/weapons/:specificWeaponId", async (req: Request, res: Response) => {
   const { specificWeaponId } = req.params;
-  console.log(specificWeaponId);
+
   res.send(
     JSON.stringify({
       searchId: specificWeaponId as TypesOfWeaponIds,
@@ -149,7 +151,7 @@ app.get("/bosses", async (req: Request, res: Response) => {
 
 app.get("/bosses/:bossId", async (req: Request, res: Response) => {
   const { bossId } = req.params;
-  console.log(bossId);
+
   const data = {
     searchId: bossId,
     bossesList,

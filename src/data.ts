@@ -177,7 +177,7 @@ export const regions: Regions = {
 
 type Caregory = "Material" | "Alchemy" | "Fish" | "Tailoring";
 
-type ResourceList = {
+type RecipesList = {
   recipe: ResourceIds[];
   resultItems: ResourceIds[];
 };
@@ -216,7 +216,7 @@ export type ResourcesFullInfo = Item & {
   stackSize: number;
   groups: {
     enemiesList: EnemiesIds[];
-    resoursesList: ResourceList[];
+    resoursesList: ResourcesRecipesIds;
   };
 };
 
@@ -252,6 +252,158 @@ export const resourcesGroups: ResourcesGroups[] = [
   },
 ];
 
+type ResourcesRecipesIds =
+  | "simple-wood-recipe"
+  | "hallow-wood-recipe"
+  | "simple-stone-recipe"
+  | "stone-dust-recipe"
+  | "copper-ore-recipe"
+  | "iron-ore-recipe"
+  | "plank-recipe"
+  | "sawdust-recipe"
+  | "oil-recipe"
+  | "fish-bone-recipe"
+  | "fish-recipe"
+  | "whetstone-recipe"
+  | "copper-ingot-recipe"
+  | "iron-ingot-recipe"
+  | "reinforced-plank-recipe"
+  | "bone-recipe"
+  | "grave-dust-recipe"
+  | "rugged-hide-recipe"
+  | "leather-recipe";
+
+export const recipesList: {
+  [key in ResourcesRecipesIds]: RecipesList[];
+} = {
+  "bone-recipe": [
+    {
+      recipe: ["bone"],
+      resultItems: ["grave-dust"],
+    },
+  ],
+  "grave-dust-recipe": [
+    {
+      recipe: ["bone"],
+      resultItems: ["grave-dust"],
+    },
+  ],
+  "simple-wood-recipe": [
+    {
+      recipe: ["simple-wood"],
+      resultItems: ["plank", "sawdust"],
+    },
+  ],
+  "plank-recipe": [
+    {
+      recipe: ["simple-wood"],
+      resultItems: ["plank", "sawdust"],
+    },
+    {
+      recipe: ["hallow-wood"],
+      resultItems: ["plank", "oil"],
+    },
+  ],
+  "sawdust-recipe": [
+    {
+      recipe: ["simple-wood"],
+      resultItems: ["plank", "sawdust"],
+    },
+  ],
+  "hallow-wood-recipe": [
+    {
+      recipe: ["hallow-wood"],
+      resultItems: ["plank", "oil"],
+    },
+  ],
+  "oil-recipe": [
+    {
+      recipe: ["hallow-wood"],
+      resultItems: ["plank", "oil"],
+    },
+    {
+      recipe: ["fish"],
+      resultItems: ["fish-bone", "oil"],
+    },
+  ],
+  "fish-bone-recipe": [
+    {
+      recipe: ["fish"],
+      resultItems: ["fish-bone", "oil"],
+    },
+  ],
+  "fish-recipe": [
+    {
+      recipe: ["fish"],
+      resultItems: ["fish-bone", "oil"],
+    },
+  ],
+  "simple-stone-recipe": [
+    {
+      recipe: ["simple-stone"],
+      resultItems: ["stone-dust"],
+    },
+  ],
+  "stone-dust-recipe": [
+    {
+      recipe: ["copper-ore", "stone-dust"],
+      resultItems: ["whetstone"],
+    },
+  ],
+  "whetstone-recipe": [
+    {
+      recipe: ["copper-ingot", "stone-dust"],
+      resultItems: ["whetstone"],
+    },
+  ],
+  "copper-ore-recipe": [
+    {
+      recipe: ["copper-ore"],
+      resultItems: ["copper-ingot"],
+    },
+  ],
+  "copper-ingot-recipe": [
+    {
+      recipe: ["copper-ore"],
+      resultItems: ["copper-ingot"],
+    },
+  ],
+  "iron-ore-recipe": [
+    {
+      recipe: ["iron-ore"],
+      resultItems: ["iron-ingot"],
+    },
+  ],
+  "iron-ingot-recipe": [
+    {
+      recipe: ["iron-ore"],
+      resultItems: ["iron-ingot"],
+    },
+    {
+      recipe: ["iron-ingot", "plank"],
+      resultItems: ["reinforced-plank"],
+    },
+  ],
+  "reinforced-plank-recipe": [
+    {
+      recipe: ["iron-ingot", "plank"],
+      resultItems: ["reinforced-plank"],
+    },
+  ],
+  "rugged-hide-recipe": [
+    {
+      recipe: ["rugged-hide"],
+      resultItems: ["leather"],
+    },
+  ],
+  "leather-recipe": [
+    {
+      recipe: ["rugged-hide"],
+      resultItems: ["leather"],
+    },
+  ],
+};
+
 export const resourcesList: ResourcesList = {
   bone: {
     id: "bone",
@@ -265,12 +417,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/bone.webp",
     groups: {
       enemiesList: ["skeleton"],
-      resoursesList: [
-        {
-          recipe: ["bone"],
-          resultItems: ["grave-dust"],
-        },
-      ],
+      resoursesList: "bone-recipe",
     },
   },
   "grave-dust": {
@@ -285,12 +432,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/grave-dust.webp",
     groups: {
       enemiesList: ["ghoul", "banshee"],
-      resoursesList: [
-        {
-          recipe: ["bone"],
-          resultItems: ["grave-dust"],
-        },
-      ],
+      resoursesList: "grave-dust-recipe",
     },
   },
   "simple-wood": {
@@ -305,12 +447,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/simple-wood.webp",
     groups: {
       enemiesList: ["treant"],
-      resoursesList: [
-        {
-          recipe: ["simple-wood"],
-          resultItems: ["plank", "sawdust"],
-        },
-      ],
+      resoursesList: "simple-wood-recipe",
     },
   },
   plank: {
@@ -321,19 +458,9 @@ export const resourcesList: ResourcesList = {
     stackSize: 250,
     description: `Plank is a common resource used for Weapons and many building structures in V Rising`,
     img: "http://localhost:4000/images/plank.webp",
-    // recepies: ["plank-recepie-id"]
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["simple-wood"],
-          resultItems: ["plank", "sawdust"],
-        },
-        {
-          recipe: ["hallow-wood"],
-          resultItems: ["plank", "oil"],
-        },
-      ],
+      resoursesList: "plank-recipe",
     },
   },
   sawdust: {
@@ -346,12 +473,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/sawdust.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["simple-wood"],
-          resultItems: ["plank", "sawdust"],
-        },
-      ],
+      resoursesList: "sawdust-recipe",
     },
   },
   "hallow-wood": {
@@ -364,12 +486,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/hallow-wood.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["hallow-wood"],
-          resultItems: ["plank", "oil"],
-        },
-      ],
+      resoursesList: "hallow-wood-recipe",
     },
   },
   oil: {
@@ -383,16 +500,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/oil.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["hallow-wood"],
-          resultItems: ["plank", "oil"],
-        },
-        {
-          recipe: ["fish"],
-          resultItems: ["fish-bone", "oil"],
-        },
-      ],
+      resoursesList: "oil-recipe",
     },
   },
   "fish-bone": {
@@ -406,12 +514,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/fish-bone.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["fish"],
-          resultItems: ["fish-bone", "oil"],
-        },
-      ],
+      resoursesList: "fish-bone-recipe",
     },
   },
   fish: {
@@ -426,12 +529,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/fish.webp",
     groups: {
       enemiesList: ["flesh-golem"],
-      resoursesList: [
-        {
-          recipe: ["fish"],
-          resultItems: ["fish-bone", "oil"],
-        },
-      ],
+      resoursesList: "fish-recipe",
     },
   },
   "simple-stone": {
@@ -445,12 +543,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/simple-stone.webp",
     groups: {
       enemiesList: ["emery-golem", "iron-golem", "stone-golem"],
-      resoursesList: [
-        {
-          recipe: ["simple-stone"],
-          resultItems: ["stone-dust"],
-        },
-      ],
+      resoursesList: "simple-stone-recipe",
     },
   },
   "stone-dust": {
@@ -464,12 +557,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/stone-dust.webp",
     groups: {
       enemiesList: ["stone-golem"],
-      resoursesList: [
-        {
-          recipe: ["copper-ore", "stone-dust"],
-          resultItems: ["whetstone"],
-        },
-      ],
+      resoursesList: "stone-dust-recipe",
     },
   },
   whetstone: {
@@ -483,12 +571,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/whetstone.webp",
     groups: {
       enemiesList: ["stone-golem"],
-      resoursesList: [
-        {
-          recipe: ["copper-ingot", "stone-dust"],
-          resultItems: ["whetstone"],
-        },
-      ],
+      resoursesList: "whetstone-recipe",
     },
   },
   "copper-ore": {
@@ -504,12 +587,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/copper-ore.webp",
     groups: {
       enemiesList: ["blood-elemental"],
-      resoursesList: [
-        {
-          recipe: ["copper-ore"],
-          resultItems: ["copper-ingot"],
-        },
-      ],
+      resoursesList: "copper-ore-recipe",
     },
   },
   "copper-ingot": {
@@ -522,12 +600,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/copper-ingot.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["copper-ore"],
-          resultItems: ["copper-ingot"],
-        },
-      ],
+      resoursesList: "copper-ingot-recipe",
     },
   },
   "iron-ore": {
@@ -544,12 +617,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/iron-ore.webp",
     groups: {
       enemiesList: ["blood-elemental", "iron-golem"],
-      resoursesList: [
-        {
-          recipe: ["iron-ore"],
-          resultItems: ["iron-ingot"],
-        },
-      ],
+      resoursesList: "iron-ore-recipe",
     },
   },
   "iron-ingot": {
@@ -563,16 +631,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/iron-ingot.webp",
     groups: {
       enemiesList: ["blood-elemental", "iron-golem"],
-      resoursesList: [
-        {
-          recipe: ["iron-ore"],
-          resultItems: ["iron-ingot"],
-        },
-        {
-          recipe: ["iron-ingot", "plank"],
-          resultItems: ["reinforced-plank"],
-        },
-      ],
+      resoursesList: "iron-ingot-recipe",
     },
   },
   "reinforced-plank": {
@@ -586,12 +645,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/reinforced-plank.webp",
     groups: {
       enemiesList: ["blood-elemental", "iron-golem"],
-      resoursesList: [
-        {
-          recipe: ["iron-ingot", "plank"],
-          resultItems: ["reinforced-plank"],
-        },
-      ],
+      resoursesList: "reinforced-plank-recipe",
     },
   },
   "rugged-hide": {
@@ -606,12 +660,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/rugged-hide.webp",
     groups: {
       enemiesList: ["bear"],
-      resoursesList: [
-        {
-          recipe: ["rugged-hide"],
-          resultItems: ["leather"],
-        },
-      ],
+      resoursesList: "rugged-hide-recipe",
     },
   },
   leather: {
@@ -625,12 +674,7 @@ export const resourcesList: ResourcesList = {
     img: "http://localhost:4000/images/leather.webp",
     groups: {
       enemiesList: [],
-      resoursesList: [
-        {
-          recipe: ["rugged-hide"],
-          resultItems: ["leather"],
-        },
-      ],
+      resoursesList: "leather-recipe",
     },
   },
 };
