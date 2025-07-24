@@ -37,6 +37,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(async (req, res, next) => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  next();
+});
+
 app.get("/news/:page", async (req: Request, res: Response) => {
   const page = Number(req.params.page) || 1;
   const chunkStartIndex = newsPerPage * (page - 1);
